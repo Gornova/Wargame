@@ -4,7 +4,11 @@ Wargame is a simple, opensource, little wargame. written in Java.
 
 ## Status
 
-In progress, just a basic framework for now. Ai moves randomly
+In progress, just a basic framework for now.
+Ai feature right now:
+* establish target
+* move to it
+* attack when in range
 
 ## Vision
 
