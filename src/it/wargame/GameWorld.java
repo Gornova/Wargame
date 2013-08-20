@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
@@ -34,6 +35,14 @@ public class GameWorld extends BasicGameState {
 	@SuppressWarnings("unused")
 	private AiInterface ai;
 
+	private Image moveImage;
+
+	private Image moveGrayImage;
+
+	private Image swordImage;
+
+	private Image swordGrayImage;
+
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
 		map = new GameMap(6).init();
@@ -46,11 +55,18 @@ public class GameWorld extends BasicGameState {
 
 		c = Creature.buildWarrior().setLocation(5, 5).setGroup(Creature.GROUP_AI);
 		creatures.add(c);
+		c = null;
 		c = Creature.buildArcher().setLocation(4, 5).setGroup(Creature.GROUP_AI);
 		creatures.add(c);
 
-		ai = new RandomAI(creatures, this);
+		ai = new TargetAi(creatures, this);
 		Wargame.eventBus.register(this);
+
+		moveImage = new Image("res/move.png");
+		moveGrayImage = new Image("res/move-gray.png");
+
+		swordImage = new Image("res/sword.png");
+		swordGrayImage = new Image("res/sword-gray.png");
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame state, Graphics g) throws SlickException {
@@ -96,6 +112,17 @@ public class GameWorld extends BasicGameState {
 		g.drawString(c.getType(), x, y);
 		g.drawString("HP " + c.getHp() + " MV " + c.getMovement() + " DMG " + c.getDamage(), x, y + 16);
 		g.drawString(c.getGroup(), x, y + 32);
+
+		if (!c.isMoved()) {
+			g.drawImage(moveImage, 32, 388);
+		} else {
+			g.drawImage(moveGrayImage, 32, 388);
+		}
+		if (!c.isAttacked()) {
+			g.drawImage(swordImage, 76, 388);
+		} else {
+			g.drawImage(swordGrayImage, 76, 388);
+		}
 	}
 
 	@Override
@@ -134,23 +161,22 @@ public class GameWorld extends BasicGameState {
 			selectedCreature = isCreature(x / 64, y / 64);
 			return;
 		}
-		// move and attack commands
 		if (selectedCreature != null && button == Input.MOUSE_LEFT_BUTTON) {
+			selectedCreature = null;
+		}
+
+		// move and attack commands
+		if (selectedCreature != null && button == Input.MOUSE_RIGHT_BUTTON) {
 			int tx = x / 64;
 			int ty = y / 64;
-			if (isCreature(tx, ty) == null) {
+			Creature target = isCreature(tx, ty);
+			if (target == null) {
 				if (isValid(tx, ty)) {
 					Wargame.eventBus.post(new MoveEvent(selectedCreature, tx, ty, Creature.GROUP_PLAYER));
-					selectedCreature = null;
 				}
 			} else if (isTargetable(tx, ty, Creature.GROUP_PLAYER)) {
-				Wargame.eventBus.post(new AttackEvent(selectedCreature, tx, ty, Creature.GROUP_PLAYER));
-				selectedCreature = null;
-				// } else if (selectedCreature.isMoved()) {
-				// selectedCreature = null;
-				// }
+				Wargame.eventBus.post(new AttackEvent(selectedCreature, target));
 			}
-			selectedCreature = null;
 			sx = 1000;
 			sy = 1000;
 		}

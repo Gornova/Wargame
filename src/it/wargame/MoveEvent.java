@@ -46,4 +46,11 @@ public class MoveEvent {
 		this.owner = owner;
 	}
 
+	public boolean haveSameTarget(MoveEvent m) {
+		if (this.getX() == m.getX() && this.getY() == m.getY()) {
+			return true;
+		}
+		return false;
+	}
+
 }
