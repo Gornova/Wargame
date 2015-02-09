@@ -57,7 +57,7 @@ public class GameWorld extends BasicGameState {
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
-		map = new GameMap(6).init();
+		map = new GameMap(6).init().placeBlock(2, 2);
 		Creature c = Creature.buildWarrior().setLocation(0, 2).setGroup(Creature.GROUP_PLAYER);
 		creatures.add(c);
 		c = Creature.buildArcher().setLocation(0, 3).setGroup(Creature.GROUP_PLAYER);

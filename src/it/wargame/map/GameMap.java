@@ -13,6 +13,7 @@ public class GameMap {
 	private int size;
 
 	public static final int GRASS = 0;
+	public static final int BLOCK = 1;
 
 	private GameMapRenderer mapRenderer;
 	private Creature selectedCreature;
@@ -31,6 +32,11 @@ public class GameMap {
 		}
 		return this;
 	}
+	
+	public GameMap placeBlock(int x, int y){
+		map[x][y] = BLOCK;
+		return this;
+	}
 
 	public int getTile(int x, int y) {
 		if (x < 0 || x > size || y < 0 || y > size) {
@@ -38,7 +44,7 @@ public class GameMap {
 		}
 		return map[x][y];
 	}
-
+	
 	public int getSize() {
 		return size;
 	}
@@ -49,6 +55,14 @@ public class GameMap {
 
 	public void drawMoveable(Creature selectedCreature) {
 		this.selectedCreature = selectedCreature;
+	}
+
+	public boolean isGrass(int x, int y){
+		return getTile(x,y) == GRASS;
+	}
+	
+	public boolean isBlock(int x, int y) {
+		return getTile(x,y) == BLOCK;
 	}
 
 }
