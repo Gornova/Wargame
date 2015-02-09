@@ -43,7 +43,6 @@ public class CreatureRenderer {
 		}
 		g.drawImage(creatureImage, tx, ty);
 		g.drawString("" + c.getHp(), tx, ty);
-		g.drawString("" + c.getId(), tx + 48, ty);
 
 	}
 }
