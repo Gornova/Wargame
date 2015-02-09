@@ -125,7 +125,7 @@ public class Creature {
 		return group == GROUP_AI ? true : false;
 	}
 
-	public boolean isPlayer() {
+	public boolean isGroupPlayer() {
 		return group == GROUP_PLAYER ? true : false;
 	}
 	public String getGroup() {
@@ -199,5 +199,9 @@ public class Creature {
 
 	public boolean isInRange(Creature target) {
 		return new Vector2f(this.x, this.y).distance(new Vector2f(target.getX(), target.getY())) < range ? true : false;
+	}
+	
+	public boolean isInRangeMovement(int tx, int ty) {
+		return new Vector2f(this.x, this.y).distance(new Vector2f(tx,ty)) < movement+1 ? true : false;
 	}
 }

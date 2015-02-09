@@ -1,5 +1,7 @@
 package it.wargame.map;
 
+import it.wargame.creatures.Creature;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -13,6 +15,7 @@ public class GameMap {
 	public static final int GRASS = 0;
 
 	private GameMapRenderer mapRenderer;
+	private Creature selectedCreature;
 
 	public GameMap(int size) {
 		this.size = size;
@@ -41,7 +44,11 @@ public class GameMap {
 	}
 
 	public void render(GameContainer container, StateBasedGame state, Graphics g) throws SlickException {
-		mapRenderer.render(container, state, g);
+		mapRenderer.render(container, state, g, selectedCreature);
+	}
+
+	public void drawMoveable(Creature selectedCreature) {
+		this.selectedCreature = selectedCreature;
 	}
 
 }

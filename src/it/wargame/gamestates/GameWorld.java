@@ -22,6 +22,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.Log;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -170,10 +171,18 @@ public class GameWorld extends BasicGameState {
 			sx = x / 64 * 64;
 			sy = y / 64 * 64;
 			selectedCreature = isCreature(x / 64, y / 64);
+			if (selectedCreature!=null){
+				if (selectedCreature.isGroupPlayer()){
+					Log.info("selected my creature");
+					map.drawMoveable(selectedCreature);
+					//test
+				}
+			}
 			return;
 		}
 		if (selectedCreature != null && button == Input.MOUSE_LEFT_BUTTON) {
 			selectedCreature = null;
+			map.drawMoveable(null);
 		}
 
 		// move and attack commands

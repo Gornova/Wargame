@@ -103,7 +103,7 @@ public class TargetAi implements AiInterface {
 	private List<Creature> getEnemies(ArrayList<Creature> creatures) {
 		List<Creature> result = new ArrayList<Creature>();
 		for (Creature c : creatures) {
-			if (c.isPlayer()) {
+			if (c.isGroupPlayer()) {
 				result.add(c);
 			}
 		}
