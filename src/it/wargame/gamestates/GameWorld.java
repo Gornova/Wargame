@@ -57,28 +57,41 @@ public class GameWorld extends BasicGameState {
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
-		map = new GameMap(6).init().placeBlock(2, 2);
-		Creature c = Creature.buildWarrior().setLocation(0, 2).setGroup(Creature.GROUP_PLAYER);
-		creatures.add(c);
-		c = Creature.buildArcher().setLocation(0, 3).setGroup(Creature.GROUP_PLAYER);
-		creatures.add(c);
-
-		nextTurn = new NextTurnImageButton(320, 384,new Image("res/nextButton.png"));
-
-		c = Creature.buildWarrior().setLocation(5, 2).setGroup(Creature.GROUP_AI);
-		creatures.add(c);
-		c = null;
-		c = Creature.buildArcher().setLocation(5, 3).setGroup(Creature.GROUP_AI);
-		creatures.add(c);
-
-		ai = new TargetAi(creatures, this);
+		map = new GameMap(6).init().placeBlock(2, 2).placeBlock(2, 3).placeBlock(3, 2).placeBlock(3, 3);
+		placeUnits();
 		Wargame.eventBus.register(this);
-
+		loadImages();
+	}
+	private void loadImages() throws SlickException {
+		nextTurn = new NextTurnImageButton(320, 384,new Image("res/nextButton.png"));		
 		moveImage = new Image("res/move.png");
 		moveGrayImage = new Image("res/move-gray.png");
 
 		swordImage = new Image("res/sword.png");
 		swordGrayImage = new Image("res/sword-gray.png");
+	}
+	private void placeUnits() throws SlickException {
+		// add player units
+		Creature c = Creature.buildWarrior().setLocation(0, 1).setGroup(Creature.GROUP_PLAYER);
+		creatures.add(c);
+		c = Creature.buildArcher().setLocation(0, 2).setGroup(Creature.GROUP_PLAYER);
+		creatures.add(c);
+		c = Creature.buildArcher().setLocation(0, 3).setGroup(Creature.GROUP_PLAYER);
+		creatures.add(c);
+		c = Creature.buildWarrior().setLocation(0, 4).setGroup(Creature.GROUP_PLAYER);
+		creatures.add(c);
+
+		// add ai units
+		c = Creature.buildWarrior().setLocation(5, 1).setGroup(Creature.GROUP_AI);
+		creatures.add(c);
+		c = Creature.buildArcher().setLocation(5, 2).setGroup(Creature.GROUP_AI);
+		creatures.add(c);
+		c = Creature.buildArcher().setLocation(5, 3).setGroup(Creature.GROUP_AI);
+		creatures.add(c);
+		c = Creature.buildWarrior().setLocation(5, 4).setGroup(Creature.GROUP_AI);
+		creatures.add(c);
+
+		ai = new TargetAi(creatures, this);
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame state, Graphics g) throws SlickException {
