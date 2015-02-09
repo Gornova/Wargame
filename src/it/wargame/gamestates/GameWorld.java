@@ -119,21 +119,21 @@ public class GameWorld extends BasicGameState {
 	}
 
 	private void drawCreatureInfo(Graphics g, Creature c) {
-		int x = 32;
-		int y = 424;
+		int x = 5;
+		int y = 388;
 		g.drawString(c.getType(), x, y);
 		g.drawString("HP " + c.getHp() + " MV " + c.getMovement() + " DMG " + c.getDamage(), x, y + 16);
 		g.drawString(c.getGroup(), x, y + 32);
 
 		if (!c.isMoved()) {
-			g.drawImage(moveImage, 32, 388);
+			g.drawImage(moveImage, 200, y+8);
 		} else {
-			g.drawImage(moveGrayImage, 32, 388);
+			g.drawImage(moveGrayImage, 200, y+8);
 		}
 		if (!c.isAttacked()) {
-			g.drawImage(swordImage, 76, 388);
+			g.drawImage(swordImage, 256, y+8);
 		} else {
-			g.drawImage(swordGrayImage, 76, 388);
+			g.drawImage(swordGrayImage, 256, y+8);
 		}
 	}
 
