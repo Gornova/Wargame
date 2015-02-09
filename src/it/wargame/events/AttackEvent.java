@@ -1,4 +1,6 @@
-package it.wargame;
+package it.wargame.events;
+
+import it.wargame.creatures.Creature;
 
 public class AttackEvent {
 

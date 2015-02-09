@@ -1,4 +1,4 @@
-package it.wargame;
+package it.wargame.events;
 
 public class NextTurnEvent {
 

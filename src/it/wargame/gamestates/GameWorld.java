@@ -1,4 +1,15 @@
-package it.wargame;
+package it.wargame.gamestates;
+
+import it.wargame.Wargame;
+import it.wargame.ai.AiInterface;
+import it.wargame.ai.TargetAi;
+import it.wargame.creatures.Creature;
+import it.wargame.events.AttackEvent;
+import it.wargame.events.MoveEvent;
+import it.wargame.events.NextTurnEvent;
+import it.wargame.map.GameMap;
+import it.wargame.ui.Button;
+import it.wargame.ui.NextTurnButton;
 
 import java.util.ArrayList;
 import java.util.Iterator;

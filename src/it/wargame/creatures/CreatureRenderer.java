@@ -1,4 +1,6 @@
-package it.wargame;
+package it.wargame.creatures;
+
+import it.wargame.util.Util;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;

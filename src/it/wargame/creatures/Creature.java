@@ -1,4 +1,8 @@
-package it.wargame;
+package it.wargame.creatures;
+
+import it.wargame.Wargame;
+import it.wargame.events.AttackEvent;
+import it.wargame.events.MoveEvent;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

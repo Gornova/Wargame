@@ -1,4 +1,7 @@
-package it.wargame;
+package it.wargame.ui;
+
+import it.wargame.Wargame;
+import it.wargame.events.NextTurnEvent;
 
 import org.newdawn.slick.util.Log;
 

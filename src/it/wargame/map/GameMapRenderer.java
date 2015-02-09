@@ -1,4 +1,6 @@
-package it.wargame;
+package it.wargame.map;
+
+import it.wargame.util.Util;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

@@ -1,4 +1,4 @@
-package it.wargame;
+package it.wargame.util;
 
 /* 
  * Copyright (c) 2002 Shaven Puppy Ltd

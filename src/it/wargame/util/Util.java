@@ -1,4 +1,4 @@
-package it.wargame;
+package it.wargame.util;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;

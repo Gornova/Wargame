@@ -1,4 +1,6 @@
-package it.wargame;
+package it.wargame.ai;
+
+import it.wargame.events.NextTurnEvent;
 
 import com.google.common.eventbus.Subscribe;
 

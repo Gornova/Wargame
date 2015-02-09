@@ -1,4 +1,10 @@
-package it.wargame;
+package it.wargame.ai;
+
+import it.wargame.Wargame;
+import it.wargame.creatures.Creature;
+import it.wargame.events.MoveEvent;
+import it.wargame.events.NextTurnEvent;
+import it.wargame.gamestates.GameWorld;
 
 import java.util.ArrayList;
 import java.util.Random;
