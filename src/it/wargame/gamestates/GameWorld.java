@@ -146,7 +146,6 @@ public class GameWorld extends BasicGameState {
 			if (t.isDead()) {
 				iterator.remove();
 			}
-
 		}
 	}
 
@@ -160,29 +159,21 @@ public class GameWorld extends BasicGameState {
 		if (oldx != newx || oldy != newy) {
 			mx = newx / 64 * 64;
 			my = newy / 64 * 64;
-		} else {
-		}
+		} 
 	}
 
 	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount) {
 		// first select
-		if (selectedCreature == null && button == Input.MOUSE_LEFT_BUTTON) {
+		if (button == Input.MOUSE_LEFT_BUTTON) {
 			sx = x / 64 * 64;
 			sy = y / 64 * 64;
 			selectedCreature = isCreature(x / 64, y / 64);
 			if (selectedCreature!=null){
 				if (selectedCreature.isGroupPlayer()){
-					Log.info("selected my creature");
 					map.drawMoveable(selectedCreature);
-					//test
 				}
 			}
-			return;
-		}
-		if (selectedCreature != null && button == Input.MOUSE_LEFT_BUTTON) {
-			selectedCreature = null;
-			map.drawMoveable(null);
 		}
 
 		// move and attack commands
@@ -200,21 +191,6 @@ public class GameWorld extends BasicGameState {
 			sx = 1000;
 			sy = 1000;
 		}
-		// attack command
-		// if (selectedCreature != null && button == Input.MOUSE_LEFT_BUTTON) {
-		// int tx = x / 64;
-		// int ty = y / 64;
-		// if (isTargetable(tx, ty, Creature.GROUP_PLAYER)) {
-		// Wargame.eventBus.post(new AttackEvent(selectedCreature, tx, ty,
-		// Creature.GROUP_PLAYER));
-		// selectedCreature = null;
-		// sx = 1000;
-		// sy = 1000;
-		// } else {
-		// selectedCreature = null;
-		// }
-		//
-		// }
 	}
 	private boolean isTargetable(int tx, int ty, int targetGroup) {
 		for (Creature c : creatures) {
