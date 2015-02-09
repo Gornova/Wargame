@@ -82,13 +82,13 @@ public class GameWorld extends BasicGameState {
 		creatures.add(c);
 
 		// add ai units
-		c = Creature.buildWarrior().setLocation(5, 1).setGroup(Creature.GROUP_AI);
+		c = Creature.buildWarrior().setLocation(11, 1).setGroup(Creature.GROUP_AI);
 		creatures.add(c);
-		c = Creature.buildArcher().setLocation(5, 2).setGroup(Creature.GROUP_AI);
+		c = Creature.buildArcher().setLocation(11, 2).setGroup(Creature.GROUP_AI);
 		creatures.add(c);
-		c = Creature.buildArcher().setLocation(5, 3).setGroup(Creature.GROUP_AI);
+		c = Creature.buildArcher().setLocation(11, 3).setGroup(Creature.GROUP_AI);
 		creatures.add(c);
-		c = Creature.buildWarrior().setLocation(5, 4).setGroup(Creature.GROUP_AI);
+		c = Creature.buildWarrior().setLocation(11, 4).setGroup(Creature.GROUP_AI);
 		creatures.add(c);
 
 		ai = new TargetAi(creatures, this);
