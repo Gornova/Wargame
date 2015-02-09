@@ -10,10 +10,10 @@ import org.newdawn.slick.state.StateBasedGame;
 public abstract class Button {
 
 	private String text;
-	private int x;
-	private int y;
-	private int w;
-	private int h;
+	protected int x;
+	protected int y;
+	protected int w;
+	protected int h;
 
 	public Button(int x, int y) {
 		this.x = x;

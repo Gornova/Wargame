@@ -24,7 +24,7 @@ public class Wargame extends StateBasedGame {
 	public static void main(String[] args) throws SlickException {
 		Wargame game = new Wargame("Wargame");
 		AppGameContainer container = new AppGameContainer(game);
-		container.setDisplayMode(384, 488, false);
+		container.setDisplayMode(384, 448, false);
 		container.setShowFPS(false);
 		container.setAlwaysRender(true);
 		container.setTargetFrameRate(40);

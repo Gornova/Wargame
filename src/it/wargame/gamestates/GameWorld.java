@@ -9,7 +9,7 @@ import it.wargame.events.MoveEvent;
 import it.wargame.events.NextTurnEvent;
 import it.wargame.map.GameMap;
 import it.wargame.ui.Button;
-import it.wargame.ui.NextTurnButton;
+import it.wargame.ui.NextTurnImageButton;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -63,7 +63,7 @@ public class GameWorld extends BasicGameState {
 		c = Creature.buildArcher().setLocation(0, 3).setGroup(Creature.GROUP_PLAYER);
 		creatures.add(c);
 
-		nextTurn = new NextTurnButton(4 * 64, 424).setText("Next turn");
+		nextTurn = new NextTurnImageButton(320, 384,new Image("res/nextButton.png"));
 
 		c = Creature.buildWarrior().setLocation(5, 2).setGroup(Creature.GROUP_AI);
 		creatures.add(c);
