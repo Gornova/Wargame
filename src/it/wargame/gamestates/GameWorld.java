@@ -57,7 +57,7 @@ public class GameWorld extends BasicGameState {
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
-		map = new GameMap(6).init().placeBlock(2, 2).placeBlock(2, 3).placeBlock(3, 2).placeBlock(3, 3);
+		map = new GameMap(12).init().placeBlock(2, 2).placeBlock(2, 3).placeBlock(3, 2).placeBlock(3, 3);
 		placeUnits();
 		Wargame.eventBus.register(this);
 		loadImages();
@@ -112,20 +112,20 @@ public class GameWorld extends BasicGameState {
 	}
 
 	private void drawSelected(Graphics g) {
-		if (selectedCreature!=null && isValid(sx / 64, sy / 64)) {
+		if (selectedCreature!=null && isValid(sx / 32, sy / 32)) {
 			g.setColor(Color.red);
 			g.setLineWidth(4);
-			g.drawRect(sx, sy, 64, 64);
+			g.drawRect(sx, sy, 32, 32);
 			g.resetLineWidth();
 			g.setColor(Color.white);
 		}
 	}
 
 	private void drawSelector(Graphics g) {
-		if (selectedCreature != null && isValid(mx / 64, my / 64)) {
+		if (selectedCreature != null && isValid(mx / 32, my / 32)) {
 			g.setColor(Color.blue);
 			g.setLineWidth(4);
-			g.drawRect(mx, my, 64, 64);
+			g.drawRect(mx, my, 32, 32);
 			g.resetLineWidth();
 			g.setColor(Color.white);
 		}
@@ -170,8 +170,8 @@ public class GameWorld extends BasicGameState {
 	@Override
 	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
 		if (oldx != newx || oldy != newy) {
-			mx = newx / 64 * 64;
-			my = newy / 64 * 64;
+			mx = newx / 32 * 32;
+			my = newy / 32 * 32;
 		} 
 	}
 
@@ -179,9 +179,9 @@ public class GameWorld extends BasicGameState {
 	public void mouseClicked(int button, int x, int y, int clickCount) {
 		// first select
 		if (button == Input.MOUSE_LEFT_BUTTON) {
-			sx = x / 64 * 64;
-			sy = y / 64 * 64;
-			selectedCreature = isCreature(x / 64, y / 64);
+			sx = x / 32 * 32;
+			sy = y / 32 * 32;
+			selectedCreature = isCreature(x / 32, y / 32);
 			if (selectedCreature!=null){
 				if (selectedCreature.isGroupPlayer()){
 					map.drawMoveable(selectedCreature);
@@ -191,8 +191,8 @@ public class GameWorld extends BasicGameState {
 
 		// move and attack commands
 		if (selectedCreature != null && button == Input.MOUSE_RIGHT_BUTTON) {
-			int tx = x / 64;
-			int ty = y / 64;
+			int tx = x / 32;
+			int ty = y / 32;
 			Creature target = isCreature(tx, ty);
 			if (target == null) {
 				if (isValid(tx, ty)) {

@@ -20,8 +20,8 @@ public class CreatureRenderer {
 
 	public void render(GameContainer container, StateBasedGame state, Graphics g) throws SlickException {
 		String name = "";
-		int tx = c.getX() * 64;
-		int ty = c.getY() * 64;
+		int tx = c.getX() * 32;
+		int ty = c.getY() * 32;
 		if (c.isWarrior()) {
 			if (c.isAI()) {
 				name = "warrior_ai.png";
@@ -35,10 +35,10 @@ public class CreatureRenderer {
 				name = "archer_player.png";
 			}
 		}
-		creatureImage = Util.get(name).getScaledCopy(2);
+		creatureImage = Util.get(name);
 		if (c.isMoved()) {
 			g.setColor(Color.lightGray);
-			g.fillRect(tx, ty, 64, 64);
+			g.fillRect(tx, ty, 32, 32);
 			g.setColor(Color.white);
 		}
 		g.drawImage(creatureImage, tx, ty);

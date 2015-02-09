@@ -36,14 +36,14 @@ public class GameMapRenderer {
 					color = null;
 				}
 				if (map.isGrass(i, j)) {
-					image = Util.get("grass.png").getScaledCopy(2);
+					image = Util.get("grass.png");
 				} else if (map.isBlock(i,j)) {
-					image = Util.get("block.png").getScaledCopy(2);
+					image = Util.get("block.png");
 				} else {
 					// block 
-					image = Util.get("block.png").getScaledCopy(2);
+					image = Util.get("block.png");
 				}
-				g.drawImage(image, i * 64, j * 64, color);
+				g.drawImage(image, i*32, j*32, color);
 			}
 		}
 	}
