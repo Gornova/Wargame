@@ -27,7 +27,7 @@ public class GameMapRenderer {
 				Image image;
 				color = null;
 				if (selectedCreature!=null && selectedCreature.isInRangeMovement(i, j)){
-					if (!selectedCreature.isMoved()){
+					if (!selectedCreature.isMoved() && !map.isBlock(i, j)){
 						color = Color.green;
 					} else {
 						color = Color.lightGray;
