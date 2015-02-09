@@ -57,17 +57,17 @@ public class GameWorld extends BasicGameState {
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
 		map = new GameMap(6).init();
-		Creature c = Creature.buildWarrior().setLocation(0, 0).setGroup(Creature.GROUP_PLAYER);
+		Creature c = Creature.buildWarrior().setLocation(0, 2).setGroup(Creature.GROUP_PLAYER);
 		creatures.add(c);
-		c = Creature.buildArcher().setLocation(1, 0).setGroup(Creature.GROUP_PLAYER);
+		c = Creature.buildArcher().setLocation(0, 3).setGroup(Creature.GROUP_PLAYER);
 		creatures.add(c);
 
 		nextTurn = new NextTurnButton(4 * 64, 424).setText("Next turn");
 
-		c = Creature.buildWarrior().setLocation(5, 5).setGroup(Creature.GROUP_AI);
+		c = Creature.buildWarrior().setLocation(5, 2).setGroup(Creature.GROUP_AI);
 		creatures.add(c);
 		c = null;
-		c = Creature.buildArcher().setLocation(4, 5).setGroup(Creature.GROUP_AI);
+		c = Creature.buildArcher().setLocation(5, 3).setGroup(Creature.GROUP_AI);
 		creatures.add(c);
 
 		ai = new TargetAi(creatures, this);
@@ -98,7 +98,7 @@ public class GameWorld extends BasicGameState {
 	}
 
 	private void drawSelected(Graphics g) {
-		if (isValid(sx / 64, sy / 64)) {
+		if (selectedCreature!=null && isValid(sx / 64, sy / 64)) {
 			g.setColor(Color.red);
 			g.setLineWidth(4);
 			g.drawRect(sx, sy, 64, 64);
@@ -108,7 +108,7 @@ public class GameWorld extends BasicGameState {
 	}
 
 	private void drawSelector(Graphics g) {
-		if (isValid(mx / 64, my / 64)) {
+		if (selectedCreature != null && isValid(mx / 64, my / 64)) {
 			g.setColor(Color.blue);
 			g.setLineWidth(4);
 			g.drawRect(mx, my, 64, 64);
