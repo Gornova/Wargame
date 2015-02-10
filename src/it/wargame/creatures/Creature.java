@@ -1,6 +1,7 @@
 package it.wargame.creatures;
 
 import it.wargame.Wargame;
+import it.wargame.ai.AiInterface;
 import it.wargame.events.AttackEvent;
 import it.wargame.events.MoveEvent;
 
@@ -33,6 +34,8 @@ public class Creature {
 	private int id = -1;
 
 	private static int idGenerator = 0;
+	
+	private AiInterface ai;
 
 	public Creature(int type) {
 		idGenerator++;
@@ -203,5 +206,9 @@ public class Creature {
 	
 	public boolean isInRangeMovement(int tx, int ty) {
 		return new Vector2f(this.x, this.y).distance(new Vector2f(tx,ty)) < movement+1 ? true : false;
+	}
+	
+	public void setAi(AiInterface ai){
+		this.ai = ai;
 	}
 }

@@ -1,5 +1,6 @@
 package it.wargame.map;
 
+import it.wargame.ai.AiInterface;
 import it.wargame.ai.TargetAi;
 import it.wargame.creatures.Creature;
 import it.wargame.gamestates.GameWorld;
@@ -76,12 +77,12 @@ public class GameMap implements TileBasedMap {
 	}
 
 	@Override
-	public boolean blocked(PathFindingContext arg0, int x, int y) {
+	public boolean blocked(PathFindingContext context, int x, int y) {
 		return isBlock(x,y) || isCreatureAt(x, y, Creature.GROUP_AI);
 	}
 
 	@Override
-	public float getCost(PathFindingContext arg0, int arg1, int arg2) {
+	public float getCost(PathFindingContext context, int x, int y) {
 		return 0;
 	}
 
@@ -113,16 +114,23 @@ public class GameMap implements TileBasedMap {
 		creatures.add(c);
 
 		// add ai units
+		AiInterface ai;
 		c = Creature.buildWarrior().setLocation(11, 1).setGroup(Creature.GROUP_AI);
+		ai = new TargetAi(this);
+		ai.setCreature(c);
 		creatures.add(c);
 		c = Creature.buildArcher().setLocation(11, 2).setGroup(Creature.GROUP_AI);
+		ai = new TargetAi(this);
+		ai.setCreature(c);
 		creatures.add(c);
 		c = Creature.buildArcher().setLocation(11, 3).setGroup(Creature.GROUP_AI);
+		ai = new TargetAi(this);
+		ai.setCreature(c);
 		creatures.add(c);
 		c = Creature.buildWarrior().setLocation(11, 4).setGroup(Creature.GROUP_AI);
+		ai = new TargetAi(this);
+		ai.setCreature(c);
 		creatures.add(c);
-
-		ai = new TargetAi(creatures, world);
 	}
 
 	public void renderCreatures(GameContainer container, StateBasedGame state,
@@ -175,6 +183,10 @@ public class GameMap implements TileBasedMap {
 			c.setAttacked(false);
 		}
 		
+	}
+
+	public ArrayList<Creature> getCreatures() {
+		return creatures;
 	}	
 
 }

@@ -46,7 +46,7 @@ public class GameWorld extends BasicGameState {
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
-		map = new GameMap(12).init().placeBlock(2, 2).placeBlock(2, 3).placeBlock(3, 2).placeBlock(3, 3);
+		map = new GameMap(12).init().placeBlock(5,1).placeBlock(5, 2).placeBlock(6, 2).placeBlock(5, 3).placeBlock(6, 3);
 		map.placeUnits(this);
 		Wargame.eventBus.register(this);
 		loadImages();
@@ -144,7 +144,7 @@ public class GameWorld extends BasicGameState {
 			if (selectedCreature!=null){
 				if (selectedCreature.isGroupPlayer()){
 					map.drawMoveable(selectedCreature);
-				}
+				} 
 			}
 		}
 
