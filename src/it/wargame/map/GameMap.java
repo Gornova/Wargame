@@ -1,12 +1,11 @@
 package it.wargame.map;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import it.wargame.ai.AiInterface;
 import it.wargame.ai.TargetAi;
 import it.wargame.creatures.Creature;
 import it.wargame.gamestates.GameWorld;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
