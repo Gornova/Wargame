@@ -2,7 +2,6 @@ package it.wargame.gamestates;
 
 import it.wargame.Wargame;
 import it.wargame.ai.AiInterface;
-import it.wargame.ai.TargetAi;
 import it.wargame.creatures.Creature;
 import it.wargame.events.AttackEvent;
 import it.wargame.events.MoveEvent;
@@ -10,9 +9,6 @@ import it.wargame.events.NextTurnEvent;
 import it.wargame.map.GameMap;
 import it.wargame.ui.Button;
 import it.wargame.ui.NextTurnImageButton;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -22,15 +18,12 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.Log;
 
 import com.google.common.eventbus.Subscribe;
 
 public class GameWorld extends BasicGameState {
 
 	private GameMap map;
-
-	private ArrayList<Creature> creatures = new ArrayList<Creature>();
 
 	private int mx;
 
@@ -44,9 +37,6 @@ public class GameWorld extends BasicGameState {
 
 	private Button nextTurn;
 
-	@SuppressWarnings("unused")
-	private AiInterface ai;
-
 	private Image moveImage;
 
 	private Image moveGrayImage;
@@ -58,7 +48,7 @@ public class GameWorld extends BasicGameState {
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
 		map = new GameMap(12).init().placeBlock(2, 2).placeBlock(2, 3).placeBlock(3, 2).placeBlock(3, 3);
-		placeUnits();
+		map.placeUnits(this);
 		Wargame.eventBus.register(this);
 		loadImages();
 	}
@@ -70,37 +60,13 @@ public class GameWorld extends BasicGameState {
 		swordImage = new Image("res/sword.png");
 		swordGrayImage = new Image("res/sword-gray.png");
 	}
-	private void placeUnits() throws SlickException {
-		// add player units
-		Creature c = Creature.buildWarrior().setLocation(0, 1).setGroup(Creature.GROUP_PLAYER);
-		creatures.add(c);
-		c = Creature.buildArcher().setLocation(0, 2).setGroup(Creature.GROUP_PLAYER);
-		creatures.add(c);
-		c = Creature.buildArcher().setLocation(0, 3).setGroup(Creature.GROUP_PLAYER);
-		creatures.add(c);
-		c = Creature.buildWarrior().setLocation(0, 4).setGroup(Creature.GROUP_PLAYER);
-		creatures.add(c);
 
-		// add ai units
-		c = Creature.buildWarrior().setLocation(11, 1).setGroup(Creature.GROUP_AI);
-		creatures.add(c);
-		c = Creature.buildArcher().setLocation(11, 2).setGroup(Creature.GROUP_AI);
-		creatures.add(c);
-		c = Creature.buildArcher().setLocation(11, 3).setGroup(Creature.GROUP_AI);
-		creatures.add(c);
-		c = Creature.buildWarrior().setLocation(11, 4).setGroup(Creature.GROUP_AI);
-		creatures.add(c);
-
-		ai = new TargetAi(creatures, this);
-	}
 	@Override
 	public void render(GameContainer container, StateBasedGame state, Graphics g) throws SlickException {
 		map.render(container, state, g);
 		drawSelector(g);
 		drawSelected(g);
-		for (Creature c : creatures) {
-			c.render(container, state, g);
-		}
+		map.renderCreatures(container, state, g);
 		if (selectedCreature != null) {
 			drawCreatureInfo(g, selectedCreature);
 		}
@@ -153,13 +119,7 @@ public class GameWorld extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame state, int arg2) throws SlickException {
 		nextTurn.update(gc, state, arg2);
-		// check dead creatures
-		for (Iterator<Creature> iterator = creatures.iterator(); iterator.hasNext();) {
-			Creature t = iterator.next();
-			if (t.isDead()) {
-				iterator.remove();
-			}
-		}
+		map.removeDeadCreatures(gc, state, arg2);
 	}
 
 	@Override
@@ -181,7 +141,7 @@ public class GameWorld extends BasicGameState {
 		if (button == Input.MOUSE_LEFT_BUTTON) {
 			sx = x / 32 * 32;
 			sy = y / 32 * 32;
-			selectedCreature = isCreature(x / 32, y / 32);
+			selectedCreature = map.isCreature(x / 32, y / 32);
 			if (selectedCreature!=null){
 				if (selectedCreature.isGroupPlayer()){
 					map.drawMoveable(selectedCreature);
@@ -193,28 +153,19 @@ public class GameWorld extends BasicGameState {
 		if (selectedCreature != null && button == Input.MOUSE_RIGHT_BUTTON) {
 			int tx = x / 32;
 			int ty = y / 32;
-			Creature target = isCreature(tx, ty);
+			Creature target = map.isCreature(tx, ty);
 			if (target == null) {
 				if (isValid(tx, ty)) {
 					Wargame.eventBus.post(new MoveEvent(selectedCreature, tx, ty, Creature.GROUP_PLAYER));
 				}
-			} else if (isTargetable(tx, ty, Creature.GROUP_PLAYER)) {
+			} else if (map.isTargetable(tx, ty, Creature.GROUP_PLAYER)) {
 				Wargame.eventBus.post(new AttackEvent(selectedCreature, target));
 			}
 			sx = 1000;
 			sy = 1000;
 		}
 	}
-	private boolean isTargetable(int tx, int ty, int targetGroup) {
-		for (Creature c : creatures) {
-			if (c.getOwner() != targetGroup) {
-				if (c.getX() == tx && c.getY() == ty) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+
 	public boolean isValid(int tx, int ty) {
 		if (tx < 0 || tx > map.getSize() - 1 || ty < 0 || ty > map.getSize() - 1) {
 			return false;
@@ -222,25 +173,18 @@ public class GameWorld extends BasicGameState {
 		return true;
 	}
 
-	public Creature isCreature(int x, int y) {
-		for (Creature c : creatures) {
-			if (c.isLocation(x, y)) {
-				return c;
-			}
-		}
-		return null;
-	}
+
 
 	@Subscribe
 	public void handleNextTurn(NextTurnEvent e) {
-		// reset moves&atacks
-		for (Creature c : creatures) {
-			c.setMoved(false);
-			c.setAttacked(false);
-		}
+		map.resetMoveAttackCreatures();
 		selectedCreature = null;
 	}
 	public int getSize() {
 		return map.getSize();
+	}
+	
+	public GameMap getMap() {
+		return map;
 	}
 }

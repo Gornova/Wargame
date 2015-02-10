@@ -40,7 +40,7 @@ public class RandomAI implements AiInterface {
 				}
 
 				if (world.isValid(c.getX() + mx, c.getY() + my)
-						&& world.isCreature(c.getX() + mx, c.getY() + my) == null) {
+						&& world.getMap().isCreature(c.getX() + mx, c.getY() + my) == null) {
 					Wargame.eventBus.post(new MoveEvent(c, c.getX() + mx, c.getY() + my, Creature.GROUP_AI));
 					Log.info("moved to " + c.getX() + "," + c.getY());
 				}
