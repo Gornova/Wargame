@@ -10,10 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
-import it.wargame.ai.AiInterface;
-import it.wargame.ai.TestAi;
 import it.wargame.creatures.Creature;
-import it.wargame.gamestates.GameWorld;
 
 public class GameMap implements TileBasedMap {
 
@@ -26,7 +23,7 @@ public class GameMap implements TileBasedMap {
 	private GameMapRenderer mapRenderer;
 	private Creature selectedCreature;
 
-	private ArrayList<Creature> creatures = new ArrayList<Creature>();
+	public ArrayList<Creature> creatures = new ArrayList<Creature>();
 
 	public GameMap(int size) {
 		this.size = size;
@@ -99,40 +96,6 @@ public class GameMap implements TileBasedMap {
 	@Override
 	public void pathFinderVisited(int arg0, int arg1) {
 		// TODO Auto-generated method stub
-	}
-
-	public void placeUnits(GameWorld world) throws SlickException {
-		// add player units
-		Creature c = Creature.buildWarrior().setLocation(0, 1).setGroup(Creature.GROUP_PLAYER);
-		creatures.add(c);
-		c = Creature.buildArcher().setLocation(0, 2).setGroup(Creature.GROUP_PLAYER);
-		creatures.add(c);
-		c = Creature.buildArcher().setLocation(0, 3).setGroup(Creature.GROUP_PLAYER);
-		creatures.add(c);
-		c = Creature.buildWarrior().setLocation(0, 4).setGroup(Creature.GROUP_PLAYER);
-		creatures.add(c);
-
-		// add ai units
-		AiInterface ai;
-		c = Creature.buildWarrior().setLocation(11, 1).setGroup(Creature.GROUP_AI);
-		ai = new TestAi(this);
-		ai.setCreature(c);
-		creatures.add(c);
-		// c = Creature.buildArcher().setLocation(11,
-		// 2).setGroup(Creature.GROUP_AI);
-		// ai = new TargetAi(this);
-		// ai.setCreature(c);
-		// creatures.add(c);
-		// c = Creature.buildArcher().setLocation(11,
-		// 3).setGroup(Creature.GROUP_AI);
-		// ai = new TargetAi(this);
-		// ai.setCreature(c);
-		// creatures.add(c);
-		// c = Creature.buildWarrior().setLocation(11,
-		// 4).setGroup(Creature.GROUP_AI);
-		// ai = new TargetAi(this);
-		// ai.setCreature(c);
-		// creatures.add(c);
 	}
 
 	public void renderCreatures(GameContainer container, StateBasedGame state, Graphics g) throws SlickException {

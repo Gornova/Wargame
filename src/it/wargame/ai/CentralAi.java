@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.util.Log;
 
 import it.wargame.Wargame;
@@ -12,38 +13,55 @@ import it.wargame.events.AttackEvent;
 import it.wargame.events.NextTurnEvent;
 import it.wargame.map.GameMap;
 
-public class TestAi implements AiInterface {
+/**
+ * An AI that control all units on map
+ */
+public class CentralAi implements AiInterface {
 
-	private Creature creature;
+	private List<Creature> creatures = new ArrayList<Creature>();
 	private GameMap gameMap;
+	private InfluenceMap influence;
 
-	public TestAi(GameMap gameMap) {
+	public CentralAi(GameMap gameMap) {
 		this.gameMap = gameMap;
+		this.influence = new InfluenceMap(gameMap.getSize());
 		Wargame.eventBus.register(this);
 	}
 
 	@Override
 	public void setCreature(Creature creature) {
-		this.creature = creature;
 
+	}
+
+	public void add(Creature c) {
+		this.creatures.add(c);
 	}
 
 	@Override
 	public void handleNextTurn(NextTurnEvent e) {
+		// compute influence map
+		influence.update(gameMap);
+		// for every creature, handle AI
+		for (Creature creature : creatures) {
+			handleAi(creature);
+		}
+	}
+
+	private void handleAi(Creature creature) {
 		// compute a list of all possible moves
-		List<Move> moves = buildMoves();
+		List<Move> moves = buildMoves(creature);
 		// rank them
-		moves = rankMoves(moves);
+		moves = rankMoves(moves, creature);
 		// select first and execute
 		if (moves != null && !moves.isEmpty()) {
 			Move m = moves.get(0);
-			execute(m);
+			execute(m, creature);
 		} else {
 			Log.debug("No moves to select!");
 		}
 	}
 
-	private List<Move> buildMoves() {
+	private List<Move> buildMoves(Creature creature) {
 		List<Move> moves = new ArrayList<Move>();
 		// compute a list of all points around cell where it can go
 		int cx = creature.getX();
@@ -54,7 +72,7 @@ public class TestAi implements AiInterface {
 						&& !gameMap.isCreatureAt(cx + i, cy + j, Creature.GROUP_AI)) {
 					// for each possible move, check for type (move, attack)
 					Move m = new Move(i, j);
-					setType(m);
+					setType(m, creature);
 					moves.add(m);
 				}
 			}
@@ -62,7 +80,7 @@ public class TestAi implements AiInterface {
 		return moves;
 	}
 
-	private void setType(Move m) {
+	private void setType(Move m, Creature creature) {
 		int tx = creature.getX() + m.dx;
 		int ty = creature.getY() + m.dy;
 		if (gameMap.isCreatureAt(tx, ty, Creature.GROUP_PLAYER)) {
@@ -77,11 +95,11 @@ public class TestAi implements AiInterface {
 
 	}
 
-	private List<Move> rankMoves(List<Move> moves) {
+	private List<Move> rankMoves(List<Move> moves, Creature creature) {
 		// for now ranking moves use utility (goal) as follow:
 		// first kill archer, then warrior, then move
 		for (Move move : moves) {
-			calculateUtility(move);
+			calculateUtility(move, creature);
 		}
 		// order using utility
 		Collections.sort(moves);
@@ -89,8 +107,11 @@ public class TestAi implements AiInterface {
 	}
 
 	// utility is a value between 0 an 1 (a score for moves)
-	private void calculateUtility(Move move) {
+	// bonus: use influence map by enemy units!
+	private void calculateUtility(Move move, Creature creature) {
 		double utility = 0;
+		int tx = creature.getX() + move.dx;
+		int ty = creature.getY() + move.dy;
 		if (move.attack) {
 			if (move.target.isArcher()) {
 				utility = 0.8;
@@ -98,8 +119,6 @@ public class TestAi implements AiInterface {
 				utility = 0.6;
 			}
 		} else if (move.movement) {
-			int tx = creature.getX() + move.dx;
-			int ty = creature.getY() + move.dy;
 			// put into equation that if a movement get near an enemy, is more
 			// imporatant that one is just moving
 			if (enemyNearby(tx, ty)) {
@@ -108,6 +127,9 @@ public class TestAi implements AiInterface {
 				utility = 0.2;
 			}
 
+		}
+		if (influence.influence[tx][ty] > 0) {
+			utility += influence.influence[tx][ty];
 		}
 		move.utility = utility;
 	}
@@ -125,7 +147,7 @@ public class TestAi implements AiInterface {
 		return false;
 	}
 
-	private void execute(Move m) {
+	private void execute(Move m, Creature creature) {
 		if (m.movement) {
 			int tx = creature.getX() + m.dx;
 			int ty = creature.getY() + m.dy;
@@ -167,6 +189,10 @@ public class TestAi implements AiInterface {
 			return 0;
 		}
 
+	}
+
+	public void render(Graphics g) {
+		influence.render(g);
 	}
 
 }

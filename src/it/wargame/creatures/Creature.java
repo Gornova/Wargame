@@ -1,10 +1,5 @@
 package it.wargame.creatures;
 
-import it.wargame.Wargame;
-import it.wargame.ai.AiInterface;
-import it.wargame.events.AttackEvent;
-import it.wargame.events.MoveEvent;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -12,6 +7,11 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import com.google.common.eventbus.Subscribe;
+
+import it.wargame.Wargame;
+import it.wargame.ai.AiInterface;
+import it.wargame.events.AttackEvent;
+import it.wargame.events.MoveEvent;
 
 public class Creature {
 
@@ -34,7 +34,7 @@ public class Creature {
 	private int id = -1;
 
 	private static int idGenerator = 0;
-	
+
 	private AiInterface ai;
 
 	public Creature(int type) {
@@ -55,6 +55,7 @@ public class Creature {
 		renderer = new CreatureRenderer(this);
 		Wargame.eventBus.register(this);
 	}
+
 	public Creature setLocation(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -93,26 +94,30 @@ public class Creature {
 	public void render(GameContainer container, StateBasedGame state, Graphics g) throws SlickException {
 		renderer.render(container, state, g);
 	}
+
 	public boolean isLocation(int x, int y) {
 		return (this.x == x && this.y == y) ? true : false;
 	}
 
 	public String getType() {
 		switch (type) {
-			case WARRIOR :
-				return "warrior";
-			case ARCHER :
-				return "archer";
-			default :
-				return "default";
+		case WARRIOR:
+			return "warrior";
+		case ARCHER:
+			return "archer";
+		default:
+			return "default";
 		}
 	}
+
 	public int getMovement() {
 		return movement;
 	}
+
 	public int getDamage() {
 		return damage;
 	}
+
 	public int getHp() {
 		return hp;
 	}
@@ -124,6 +129,7 @@ public class Creature {
 	public void setMoved(boolean moved) {
 		this.moved = moved;
 	}
+
 	public boolean isAI() {
 		return group == GROUP_AI ? true : false;
 	}
@@ -131,14 +137,15 @@ public class Creature {
 	public boolean isGroupPlayer() {
 		return group == GROUP_PLAYER ? true : false;
 	}
+
 	public String getGroup() {
 		switch (group) {
-			case GROUP_AI :
-				return "AI";
-			case GROUP_PLAYER :
-				return "PLAYER";
-			default :
-				return "default";
+		case GROUP_AI:
+			return "AI";
+		case GROUP_PLAYER:
+			return "PLAYER";
+		default:
+			return "default";
 		}
 	}
 
@@ -147,21 +154,16 @@ public class Creature {
 	public void handleMoveEvent(MoveEvent mv) {
 		if (mv.getCreature().getId() == this.getId() && mv.getOwner() == group) {
 			if (!isMoved()) {
-				setLocation(mv.getX(), mv.getY());
-				setMoved(true);
+				move(mv.getX(), mv.getY());
 			}
 		}
 	}
 
-	private void move(int tx, int ty) {
-		if (Math.abs(tx - x) >= movement) {
-			tx = movement;
-		}
-		if (Math.abs(ty - y) >= movement) {
-			ty = movement;
-		}
+	public void move(int tx, int ty) {
 		setLocation(tx, ty);
+		setMoved(true);
 	}
+
 	@Subscribe
 	public void handleAttackEvent(AttackEvent ae) {
 		if (ae.getTarget().getId() == this.getId()) {
@@ -171,6 +173,7 @@ public class Creature {
 			}
 		}
 	}
+
 	private void handleCombat(Creature atk, Creature def) {
 		def.hp -= atk.damage;
 		if (def.hp > 0) {
@@ -178,24 +181,31 @@ public class Creature {
 		}
 
 	}
+
 	public int getId() {
 		return id;
 	}
+
 	public boolean isDead() {
 		return hp <= 0 ? true : false;
 	}
+
 	public int getOwner() {
 		return group;
 	}
+
 	public void setAttacked(boolean b) {
 		this.attacked = b;
 	}
+
 	public boolean isAttacked() {
 		return attacked;
 	}
+
 	public int getRange() {
 		return range;
 	}
+
 	public void setRange(int range) {
 		this.range = range;
 	}
@@ -203,12 +213,12 @@ public class Creature {
 	public boolean isInRange(Creature target) {
 		return new Vector2f(this.x, this.y).distance(new Vector2f(target.getX(), target.getY())) < range ? true : false;
 	}
-	
+
 	public boolean isInRangeMovement(int tx, int ty) {
-		return new Vector2f(this.x, this.y).distance(new Vector2f(tx,ty)) < movement+1 ? true : false;
+		return new Vector2f(this.x, this.y).distance(new Vector2f(tx, ty)) < movement + 1 ? true : false;
 	}
-	
-	public void setAi(AiInterface ai){
+
+	public void setAi(AiInterface ai) {
 		this.ai = ai;
 	}
 }

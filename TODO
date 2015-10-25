@@ -1,2 +1,5 @@
 idea:
-	costruire una piccola ia legata a questo gioco
+DONE	costruire una piccola ia legata a questo gioco
+DONE	farla ragionare su due di distanza rispetto alla posizione corrente
+//central AI for all units
+DONE	influence map, see http://www.checkmarkgames.com/2012/04/turn-based-strategy-game-ai-part-3.html
