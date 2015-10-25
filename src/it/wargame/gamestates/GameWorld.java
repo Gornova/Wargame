@@ -140,7 +140,7 @@ public class GameWorld extends BasicGameState {
 		if (button == Input.MOUSE_LEFT_BUTTON) {
 			sx = x / 32 * 32;
 			sy = y / 32 * 32;
-			selectedCreature = map.isCreature(x / 32, y / 32);
+			selectedCreature = map.getCreature(x / 32, y / 32);
 			if (selectedCreature!=null){
 				if (selectedCreature.isGroupPlayer()){
 					map.drawMoveable(selectedCreature);
@@ -152,7 +152,7 @@ public class GameWorld extends BasicGameState {
 		if (selectedCreature != null && button == Input.MOUSE_RIGHT_BUTTON) {
 			int tx = x / 32;
 			int ty = y / 32;
-			Creature target = map.isCreature(tx, ty);
+			Creature target = map.getCreature(tx, ty);
 			if (target == null) {
 				if (isValid(tx, ty)) {
 					Wargame.eventBus.post(new MoveEvent(selectedCreature, tx, ty, Creature.GROUP_PLAYER));

@@ -1,10 +1,5 @@
 package it.wargame.map;
 
-import it.wargame.ai.AiInterface;
-import it.wargame.ai.TargetAi;
-import it.wargame.creatures.Creature;
-import it.wargame.gamestates.GameWorld;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -14,6 +9,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
+
+import it.wargame.ai.AiInterface;
+import it.wargame.ai.TestAi;
+import it.wargame.creatures.Creature;
+import it.wargame.gamestates.GameWorld;
 
 public class GameMap implements TileBasedMap {
 
@@ -27,8 +27,7 @@ public class GameMap implements TileBasedMap {
 	private Creature selectedCreature;
 
 	private ArrayList<Creature> creatures = new ArrayList<Creature>();
-	private TargetAi ai;
-	
+
 	public GameMap(int size) {
 		this.size = size;
 		map = new int[size][size];
@@ -43,8 +42,8 @@ public class GameMap implements TileBasedMap {
 		}
 		return this;
 	}
-	
-	public GameMap placeBlock(int x, int y){
+
+	public GameMap placeBlock(int x, int y) {
 		map[x][y] = BLOCK;
 		return this;
 	}
@@ -55,7 +54,7 @@ public class GameMap implements TileBasedMap {
 		}
 		return map[x][y];
 	}
-	
+
 	public int getSize() {
 		return size;
 	}
@@ -68,17 +67,17 @@ public class GameMap implements TileBasedMap {
 		this.selectedCreature = selectedCreature;
 	}
 
-	public boolean isGrass(int x, int y){
-		return getTile(x,y) == GRASS;
+	public boolean isGrass(int x, int y) {
+		return getTile(x, y) == GRASS;
 	}
-	
+
 	public boolean isBlock(int x, int y) {
-		return getTile(x,y) == BLOCK;
+		return getTile(x, y) == BLOCK;
 	}
 
 	@Override
 	public boolean blocked(PathFindingContext context, int x, int y) {
-		return isBlock(x,y) || isCreatureAt(x, y, Creature.GROUP_AI);
+		return isBlock(x, y) || isCreatureAt(x, y, Creature.GROUP_AI);
 	}
 
 	@Override
@@ -101,7 +100,7 @@ public class GameMap implements TileBasedMap {
 	public void pathFinderVisited(int arg0, int arg1) {
 		// TODO Auto-generated method stub
 	}
-	
+
 	public void placeUnits(GameWorld world) throws SlickException {
 		// add player units
 		Creature c = Creature.buildWarrior().setLocation(0, 1).setGroup(Creature.GROUP_PLAYER);
@@ -116,32 +115,33 @@ public class GameMap implements TileBasedMap {
 		// add ai units
 		AiInterface ai;
 		c = Creature.buildWarrior().setLocation(11, 1).setGroup(Creature.GROUP_AI);
-		ai = new TargetAi(this);
+		ai = new TestAi(this);
 		ai.setCreature(c);
 		creatures.add(c);
-		c = Creature.buildArcher().setLocation(11, 2).setGroup(Creature.GROUP_AI);
-		ai = new TargetAi(this);
-		ai.setCreature(c);
-		creatures.add(c);
-		c = Creature.buildArcher().setLocation(11, 3).setGroup(Creature.GROUP_AI);
-		ai = new TargetAi(this);
-		ai.setCreature(c);
-		creatures.add(c);
-		c = Creature.buildWarrior().setLocation(11, 4).setGroup(Creature.GROUP_AI);
-		ai = new TargetAi(this);
-		ai.setCreature(c);
-		creatures.add(c);
+		// c = Creature.buildArcher().setLocation(11,
+		// 2).setGroup(Creature.GROUP_AI);
+		// ai = new TargetAi(this);
+		// ai.setCreature(c);
+		// creatures.add(c);
+		// c = Creature.buildArcher().setLocation(11,
+		// 3).setGroup(Creature.GROUP_AI);
+		// ai = new TargetAi(this);
+		// ai.setCreature(c);
+		// creatures.add(c);
+		// c = Creature.buildWarrior().setLocation(11,
+		// 4).setGroup(Creature.GROUP_AI);
+		// ai = new TargetAi(this);
+		// ai.setCreature(c);
+		// creatures.add(c);
 	}
 
-	public void renderCreatures(GameContainer container, StateBasedGame state,
-			Graphics g) throws SlickException {
+	public void renderCreatures(GameContainer container, StateBasedGame state, Graphics g) throws SlickException {
 		for (Creature c : creatures) {
 			c.render(container, state, g);
 		}
 	}
 
-	public void removeDeadCreatures(GameContainer gc, StateBasedGame state,
-			int arg2) {
+	public void removeDeadCreatures(GameContainer gc, StateBasedGame state, int arg2) {
 		// check dead creatures
 		for (Iterator<Creature> iterator = creatures.iterator(); iterator.hasNext();) {
 			Creature t = iterator.next();
@@ -149,9 +149,9 @@ public class GameMap implements TileBasedMap {
 				iterator.remove();
 			}
 		}
-		
+
 	}
-	
+
 	public boolean isTargetable(int tx, int ty, int targetGroup) {
 		for (Creature c : creatures) {
 			if (c.getOwner() != targetGroup) {
@@ -161,9 +161,9 @@ public class GameMap implements TileBasedMap {
 			}
 		}
 		return false;
-	}	
-	
-	public Creature isCreature(int x, int y) {
+	}
+
+	public Creature getCreature(int x, int y) {
 		for (Creature c : creatures) {
 			if (c.isLocation(x, y)) {
 				return c;
@@ -171,10 +171,10 @@ public class GameMap implements TileBasedMap {
 		}
 		return null;
 	}
-	
-	public boolean isCreatureAt(int x, int y,int targetGroup) {
-		return isCreature(x,y) != null && isCreature(x, y).getOwner() == targetGroup ? true : false;
-	}	
+
+	public boolean isCreatureAt(int x, int y, int targetGroup) {
+		return getCreature(x, y) != null && getCreature(x, y).getOwner() == targetGroup ? true : false;
+	}
 
 	public void resetMoveAttackCreatures() {
 		// reset moves&atacks
@@ -182,11 +182,18 @@ public class GameMap implements TileBasedMap {
 			c.setMoved(false);
 			c.setAttacked(false);
 		}
-		
+
 	}
 
 	public ArrayList<Creature> getCreatures() {
 		return creatures;
-	}	
+	}
+
+	public boolean isValid(int x, int y) {
+		if (x >= 0 && x < size && y >= 0 && y < size) {
+			return true;
+		}
+		return false;
+	}
 
 }
