@@ -16,12 +16,13 @@ import it.wargame.map.GameMap;
  */
 public class InfluenceMap {
 
-	private static final float MAX_INFLUENCE = 12;
 	public float[][] influence;
 	private int size;
+	private int maxInfluence;
 
 	public InfluenceMap(int size) {
 		this.size = size;
+		this.maxInfluence = size;
 		init();
 	}
 
@@ -43,11 +44,11 @@ public class InfluenceMap {
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				if (i == x && j == y) {
-					influence[i][j] = MAX_INFLUENCE;
+					influence[i][j] = maxInfluence;
 				} else {
 					Vector2f c = new Vector2f(x, y);
 					Vector2f d = new Vector2f(i, j);
-					influence[i][j] = clamp(MAX_INFLUENCE - Math.abs(c.distance(d) * 1.2f), 0, MAX_INFLUENCE);
+					influence[i][j] = clamp(maxInfluence - Math.abs(c.distance(d) * 1.2f), 0, maxInfluence);
 				}
 			}
 		}
@@ -58,7 +59,7 @@ public class InfluenceMap {
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				if (influence[i][j] > 0) {
-					float alpha = clamp(influence[i][j] / MAX_INFLUENCE, 0, 0.5f);
+					float alpha = clamp(influence[i][j] / maxInfluence, 0, 0.5f);
 					color.a = alpha;
 					g.setColor(color);
 					g.fillRect(i * 32, j * 32, 32, 32);
