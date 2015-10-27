@@ -159,4 +159,8 @@ public class GameMap implements TileBasedMap {
 		return false;
 	}
 
+	public boolean isCreatureAtNotPartOfGroup(int x, int y, int group) {
+		return getCreature(x, y) != null && getCreature(x, y).getOwner() != group ? true : false;
+	}
+
 }

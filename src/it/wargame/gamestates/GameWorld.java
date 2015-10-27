@@ -45,13 +45,16 @@ public class GameWorld extends BasicGameState {
 
 	private Image swordGrayImage;
 
-	private CentralAi ai;
+	private CentralAi firstAi;
+
+	private CentralAi secondAi;
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
 		map = new GameMap(12).init().placeBlock(5, 1).placeBlock(5, 2).placeBlock(6, 2).placeBlock(5, 3).placeBlock(6,
 				3);
-		ai = new CentralAi(map);
+		firstAi = new CentralAi(map, Creature.GROUP_AI, Color.red);
+		secondAi = new CentralAi(map, Creature.GROUP_AI_2, Color.blue);
 		placeUnits(this);
 		Wargame.eventBus.register(this);
 		loadImages();
@@ -68,27 +71,44 @@ public class GameWorld extends BasicGameState {
 
 	public void placeUnits(GameWorld world) throws SlickException {
 		// add player units
-		Creature c = Creature.buildWarrior().setLocation(0, 1).setGroup(Creature.GROUP_PLAYER);
-		map.creatures.add(c);
-		c = Creature.buildWarrior().setLocation(0, 2).setGroup(Creature.GROUP_PLAYER);
-		map.creatures.add(c);
-		c = Creature.buildWarrior().setLocation(0, 3).setGroup(Creature.GROUP_PLAYER);
-		map.creatures.add(c);
-		c = Creature.buildWarrior().setLocation(0, 4).setGroup(Creature.GROUP_PLAYER);
-		map.creatures.add(c);
+		// Creature c = Creature.buildWarrior().setLocation(0,
+		// 1).setGroup(Creature.GROUP_PLAYER);
+		// map.creatures.add(c);
+		// c = Creature.buildWarrior().setLocation(0,
+		// 2).setGroup(Creature.GROUP_PLAYER);
+		// map.creatures.add(c);
+		// c = Creature.buildWarrior().setLocation(0,
+		// 3).setGroup(Creature.GROUP_PLAYER);
+		// map.creatures.add(c);
+		// c = Creature.buildWarrior().setLocation(0,
+		// 4).setGroup(Creature.GROUP_PLAYER);
+		// map.creatures.add(c);
 
 		// add ai units
-		c = Creature.buildWarrior().setLocation(11, 1).setGroup(Creature.GROUP_AI);
-		ai.add(c);
+		Creature c = Creature.buildWarrior().setLocation(11, 1).setGroup(Creature.GROUP_AI);
+		firstAi.add(c);
 		map.creatures.add(c);
 		c = Creature.buildWarrior().setLocation(11, 2).setGroup(Creature.GROUP_AI);
-		ai.add(c);
+		firstAi.add(c);
 		map.creatures.add(c);
 		c = Creature.buildWarrior().setLocation(11, 3).setGroup(Creature.GROUP_AI);
-		ai.add(c);
+		firstAi.add(c);
 		map.creatures.add(c);
 		c = Creature.buildWarrior().setLocation(11, 4).setGroup(Creature.GROUP_AI);
-		ai.add(c);
+		firstAi.add(c);
+		map.creatures.add(c);
+
+		c = Creature.buildWarrior().setLocation(0, 1).setGroup(Creature.GROUP_AI_2);
+		secondAi.add(c);
+		map.creatures.add(c);
+		c = Creature.buildWarrior().setLocation(0, 2).setGroup(Creature.GROUP_AI_2);
+		secondAi.add(c);
+		map.creatures.add(c);
+		c = Creature.buildWarrior().setLocation(0, 3).setGroup(Creature.GROUP_AI_2);
+		secondAi.add(c);
+		map.creatures.add(c);
+		c = Creature.buildWarrior().setLocation(0, 4).setGroup(Creature.GROUP_AI_2);
+		secondAi.add(c);
 		map.creatures.add(c);
 	}
 
@@ -107,7 +127,8 @@ public class GameWorld extends BasicGameState {
 
 	private void drawAi(Graphics g) {
 		// drawAI influence maps and so on
-		ai.render(g);
+		firstAi.render(g);
+		secondAi.render(g);
 
 	}
 

@@ -28,6 +28,7 @@ public class Creature {
 	private int group;
 	public final static int GROUP_PLAYER = 0;
 	public final static int GROUP_AI = 1;
+	public static final int GROUP_AI_2 = 2;
 
 	private boolean moved = false;
 	private boolean attacked = false;
@@ -220,5 +221,9 @@ public class Creature {
 
 	public void setAi(AiInterface ai) {
 		this.ai = ai;
+	}
+
+	public boolean isNotGroup(int myGroup) {
+		return group != myGroup ? true : false;
 	}
 }

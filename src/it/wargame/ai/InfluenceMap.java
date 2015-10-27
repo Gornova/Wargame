@@ -19,7 +19,6 @@ public class InfluenceMap {
 	private static final float MAX_INFLUENCE = 12;
 	public float[][] influence;
 	private int size;
-	private Color red = new Color(255, 0, 0, 0.5f);
 
 	public InfluenceMap(int size) {
 		this.size = size;
@@ -30,11 +29,11 @@ public class InfluenceMap {
 		this.influence = new float[size][size];
 	}
 
-	public void update(GameMap gameMap) {
+	public void update(GameMap gameMap, int myGroup) {
 		init();
 		// each enemy creature causes influence on map
 		for (Creature creature : gameMap.getCreatures()) {
-			if (creature.isGroupPlayer()) {
+			if (creature.isNotGroup(myGroup)) {
 				propagate(creature.getX(), creature.getY(), gameMap);
 			}
 		}
@@ -55,13 +54,13 @@ public class InfluenceMap {
 
 	}
 
-	public void render(Graphics g) {
+	public void render(Graphics g, Color color) {
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				if (influence[i][j] > 0) {
 					float alpha = clamp(influence[i][j] / MAX_INFLUENCE, 0, 0.5f);
-					red = new Color(255, 0, 0, alpha);
-					g.setColor(red);
+					color.a = alpha;
+					g.setColor(color);
 					g.fillRect(i * 32, j * 32, 32, 32);
 					g.setColor(Color.white);
 				}

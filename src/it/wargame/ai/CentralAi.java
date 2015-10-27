@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.util.Log;
 
@@ -21,11 +22,15 @@ public class CentralAi implements AiInterface {
 	private List<Creature> creatures = new ArrayList<Creature>();
 	private GameMap gameMap;
 	private InfluenceMap influence;
+	private int myGroup;
+	private Color color;
 
-	public CentralAi(GameMap gameMap) {
+	public CentralAi(GameMap gameMap, int myGroup, Color color) {
 		this.gameMap = gameMap;
 		this.influence = new InfluenceMap(gameMap.getSize());
 		Wargame.eventBus.register(this);
+		this.myGroup = myGroup;
+		this.color = color;
 	}
 
 	@Override
@@ -40,7 +45,7 @@ public class CentralAi implements AiInterface {
 	@Override
 	public void handleNextTurn(NextTurnEvent e) {
 		// compute influence map
-		influence.update(gameMap);
+		influence.update(gameMap, myGroup);
 		// for every creature, handle AI
 		for (Creature creature : creatures) {
 			handleAi(creature);
@@ -69,7 +74,7 @@ public class CentralAi implements AiInterface {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if (gameMap.isValid(cx + i, cy + j) && !gameMap.isBlock(cx + i, cy + j)
-						&& !gameMap.isCreatureAt(cx + i, cy + j, Creature.GROUP_AI)) {
+						&& !gameMap.isCreatureAt(cx + i, cy + j, myGroup)) {
 					// for each possible move, check for type (move, attack)
 					Move m = new Move(i, j);
 					setType(m, creature);
@@ -83,7 +88,7 @@ public class CentralAi implements AiInterface {
 	private void setType(Move m, Creature creature) {
 		int tx = creature.getX() + m.dx;
 		int ty = creature.getY() + m.dy;
-		if (gameMap.isCreatureAt(tx, ty, Creature.GROUP_PLAYER)) {
+		if (gameMap.isCreatureAtNotPartOfGroup(tx, ty, myGroup)) {
 			Creature target = gameMap.getCreature(tx, ty);
 			m.target = target;
 			m.attack = true;
@@ -138,7 +143,7 @@ public class CentralAi implements AiInterface {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if (gameMap.isValid(tx + i, ty + j) && !gameMap.isBlock(tx + i, ty + j)
-						&& gameMap.isCreatureAt(tx + i, ty + j, Creature.GROUP_PLAYER)) {
+						&& gameMap.isCreatureAtNotPartOfGroup(tx + i, ty + j, myGroup)) {
 					// if there is an enemy nearby
 					return true;
 				}
@@ -192,7 +197,7 @@ public class CentralAi implements AiInterface {
 	}
 
 	public void render(Graphics g) {
-		influence.render(g);
+		influence.render(g, color);
 	}
 
 }
