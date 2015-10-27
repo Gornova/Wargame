@@ -44,8 +44,8 @@ public class Creature {
 		if (type == WARRIOR) {
 			this.hp = 6;
 			this.damage = 1;
-			this.movement = 2;
-			this.range = 2;
+			this.movement = 1;
+			this.range = 1;
 		} else if (type == ARCHER) {
 			this.hp = 4;
 			this.damage = 1;

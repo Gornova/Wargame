@@ -3,3 +3,5 @@ DONE	costruire una piccola ia legata a questo gioco
 DONE	farla ragionare su due di distanza rispetto alla posizione corrente
 //central AI for all units
 DONE	influence map, see http://www.checkmarkgames.com/2012/04/turn-based-strategy-game-ai-part-3.html
+	bug se ci sono più unità nemiche insieme, non viene considerato il fatto, provato ad aggiungere, ma poi si incasina
+	se un'unità nemica é ferita.. vale di più da attaccare

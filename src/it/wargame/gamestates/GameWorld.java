@@ -70,37 +70,26 @@ public class GameWorld extends BasicGameState {
 		// add player units
 		Creature c = Creature.buildWarrior().setLocation(0, 1).setGroup(Creature.GROUP_PLAYER);
 		map.creatures.add(c);
-		// c = Creature.buildWarrior().setLocation(0,
-		// 2).setGroup(Creature.GROUP_PLAYER);
-		// creatures.add(c);
-		// c = Creature.buildWarrior().setLocation(0,
-		// 3).setGroup(Creature.GROUP_PLAYER);
-		// creatures.add(c);
-		// c = Creature.buildWarrior().setLocation(0,
-		// 4).setGroup(Creature.GROUP_PLAYER);
-		// creatures.add(c);
+		c = Creature.buildWarrior().setLocation(0, 2).setGroup(Creature.GROUP_PLAYER);
+		map.creatures.add(c);
+		c = Creature.buildWarrior().setLocation(0, 3).setGroup(Creature.GROUP_PLAYER);
+		map.creatures.add(c);
+		c = Creature.buildWarrior().setLocation(0, 4).setGroup(Creature.GROUP_PLAYER);
+		map.creatures.add(c);
 
 		// add ai units
 		c = Creature.buildWarrior().setLocation(11, 1).setGroup(Creature.GROUP_AI);
-		// ai = new TestAi(this);
-		// ai.setCreature(c);
 		ai.add(c);
 		map.creatures.add(c);
-		// c = Creature.buildWarrior().setLocation(11,
-		// 2).setGroup(Creature.GROUP_AI);
-		// ai = new TestAi(this);
-		// ai.setCreature(c);
-		// creatures.add(c);
-		// c = Creature.buildWarrior().setLocation(11,
-		// 3).setGroup(Creature.GROUP_AI);
-		// ai = new TestAi(this);
-		// ai.setCreature(c);
-		// creatures.add(c);
-		// c = Creature.buildWarrior().setLocation(11,
-		// 4).setGroup(Creature.GROUP_AI);
-		// ai = new TestAi(this);
-		// ai.setCreature(c);
-		// creatures.add(c);
+		c = Creature.buildWarrior().setLocation(11, 2).setGroup(Creature.GROUP_AI);
+		ai.add(c);
+		map.creatures.add(c);
+		c = Creature.buildWarrior().setLocation(11, 3).setGroup(Creature.GROUP_AI);
+		ai.add(c);
+		map.creatures.add(c);
+		c = Creature.buildWarrior().setLocation(11, 4).setGroup(Creature.GROUP_AI);
+		ai.add(c);
+		map.creatures.add(c);
 	}
 
 	@Override

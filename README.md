@@ -2,6 +2,8 @@
 
 Wargame is a simple, opensource, little wargame. written in Java. 
 
+![Wargame influence map](img/influence-01.png)
+
 ## Status
 
 In progress, just a basic framework for now.
@@ -9,6 +11,7 @@ Ai feature right now:
 * establish target
 * move to it
 * attack when in range
+* influence map
 
 ## Vision
 
