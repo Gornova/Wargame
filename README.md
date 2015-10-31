@@ -7,7 +7,7 @@ Wargame is a simple, opensource, little wargame. written in Java.
 In this screenshoot you can see two army: red controlled by AI and blue controlled by player.
 Each player warriors position are used to compute influence map and decide where AI have to move units.
 
-![Wargame influence map](img/influence-02.png)
+![Wargame influence map](img/wargame-01.png)
 
 And in this screenshoot you can see two AI controlled army fighting each other
 
